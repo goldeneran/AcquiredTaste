@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Acquired Taste</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Miriam+Libre:wght@400;700&family=Varela+Round&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EAE5D4;
+    --paper-card:#F4F1E5;
+    --ink:#25231C;
+    --muted:#6E6858;
+    --line:#C7BE9F;
+    --line-soft:#DAD3B9;
+    --stamp:#B15C36;
+    --stamp-soft:#E9D3C4;
+    --transit:#3F5E44;
+    --transit-soft:#D9E3D3;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Varela Round',sans-serif;
+    font-weight:400;
+    line-height:1.7;
+    background-image:radial-gradient(circle at 1px 1px, rgba(37,35,28,0.05) 1px, transparent 0);
+    background-size:22px 22px;
+  }
+  a{color:var(--transit);}
+  .wrap{max-width:900px;margin:0 auto;padding:28px 20px 80px;}
+
+  header{
+    margin-bottom:26px;border-bottom:2px solid var(--ink);padding-bottom:18px;
+  }
+  header .title-block h1{
+    font-family:'Miriam Libre',serif;font-weight:700;
+    font-size:clamp(28px,5vw,42px);margin:0 0 6px;letter-spacing:-0.5px;
+  }
+  header .title-block p{margin:0;color:var(--muted);font-size:15px;max-width:520px;}
+
+  .tabs{
+    display:flex;gap:6px;overflow-x:auto;padding:0 0 2px;
+    scrollbar-width:thin;-webkit-overflow-scrolling:touch;
+  }
+  .tabs::-webkit-scrollbar{height:6px;}
+  .tabs::-webkit-scrollbar-thumb{background:var(--line);border-radius:4px;}
+  .tab{
+    flex:0 0 auto;font-family:'Miriam Libre',serif;font-weight:500;font-size:15px;
+    background:var(--paper);border:1px solid var(--line);border-bottom:none;
+    border-radius:8px 8px 0 0;padding:10px 18px 12px;cursor:pointer;color:var(--muted);
+    position:relative;transition:transform .15s ease,background .15s ease,color .15s ease;
+    white-space:nowrap;
+  }
+  .tab:hover{color:var(--ink);}
+  .tab.active{background:var(--paper-card);color:var(--ink);transform:translateY(2px);border-color:var(--ink);z-index:2;}
+  .tab.start{display:flex;align-items:center;gap:6px;color:var(--stamp);border-color:var(--stamp-soft);}
+  .tab.start.active{border-color:var(--stamp);}
+  .tab.start svg{width:14px;height:14px;flex-shrink:0;}
+  .tab:focus-visible{outline:2px solid var(--transit);outline-offset:2px;}
+
+  .panel{
+    background:var(--paper-card);border:1px solid var(--ink);border-radius:0 0 10px 10px;
+    position:relative;
+  }
+  .panel::before{
+    content:"";position:absolute;top:0;right:0;left:0;height:1px;
+    background:repeating-linear-gradient(to left, var(--line) 0 8px, transparent 8px 14px);
+  }
+  .section{display:none;}
+  .section.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+  .section-inner{padding:30px 28px 34px;}
+
+  .photo-slot{
+    height:200px;position:relative;border-bottom:1px solid var(--ink);
+    background:var(--paper);
+  }
+  .photo-slot img{width:100%;height:100%;object-fit:cover;display:block;}
+  .photo-slot.empty{
+    display:flex;align-items:center;justify-content:center;
+    background-image:repeating-linear-gradient(-45deg, var(--line-soft) 0 2px, transparent 2px 14px);
+  }
+  .photo-slot.empty .hint{
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);
+    background:var(--paper-card);border:1px dashed var(--line);border-radius:20px;
+    padding:6px 14px;
+  }
+  .photo-caption{
+    font-size:12.5px;color:var(--muted);padding:8px 28px 0;font-style:italic;
+  }
+  .photo-caption:empty{display:none;}
+
+  .section h2{font-family:'Miriam Libre',serif;font-size:24px;font-weight:700;margin:0 0 6px;}
+  .section .lede{color:var(--muted);font-size:14px;margin:0 0 24px;padding-bottom:18px;border-bottom:1px dashed var(--line-soft);}
+
+  .block{margin-bottom:26px;}
+  .block h3{font-family:'Miriam Libre',serif;font-size:17px;font-weight:700;margin:0 0 10px;display:flex;align-items:center;gap:8px;}
+  .block h3::before{content:"";width:6px;height:6px;background:var(--transit);border-radius:50%;flex-shrink:0;}
+
+  ul.notes{list-style:none;margin:0;padding:0;}
+  ul.notes li{position:relative;padding:9px 0;padding-right:20px;border-bottom:1px dashed var(--line-soft);font-size:15px;}
+  ul.notes li:last-child{border-bottom:none;}
+  ul.notes li::before{content:"–";position:absolute;right:0;color:var(--muted);}
+  .callout{
+    background:var(--stamp-soft);border-right:3px solid var(--stamp);border-radius:2px;
+    padding:12px 16px;font-size:14px;color:#5A2E14;margin:16px 0;
+  }
+  .chip-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;}
+  .chip{
+    font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--paper);
+    border:1px solid var(--line);border-radius:20px;padding:5px 12px;color:var(--ink);
+  }
+  .foot{margin-top:20px;font-size:13px;color:var(--muted);text-align:center;}
+
+  .error-box{
+    background:#F4E4DE;border:1px solid var(--stamp);border-radius:8px;
+    padding:18px 20px;margin:20px 0;font-size:14px;color:#5A2E14;line-height:1.7;
+  }
+  .error-box b{display:block;margin-bottom:6px;font-size:16px;}
+  .error-box code{background:rgba(0,0,0,0.08);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;}
+
+  /* ===== music tab ===== */
+  .tab.music{color:var(--stamp);border-color:var(--stamp-soft);}
+  .tab.music.active{border-color:var(--stamp);}
+
+  #music-bg{
+    display:none;position:fixed;inset:0;z-index:-1;background:var(--ink);
+  }
+  #music-bg .bg-layer{
+    position:absolute;inset:0;opacity:0;transition:opacity .8s ease;
+    background:linear-gradient(160deg,#3a3226,#1c1710);
+  }
+  #music-bg .bg-layer.active{opacity:1;}
+  #music-bg .bg-layer img{width:100%;height:100%;object-fit:cover;display:block;}
+
+  .music-toc{
+    position:sticky;top:0;z-index:5;display:flex;gap:6px;overflow-x:auto;
+    padding:12px 16px;background:rgba(244,241,229,0.96);border-bottom:1px solid var(--stamp);
+    -webkit-overflow-scrolling:touch;
+  }
+  .music-toc a{
+    flex:0 0 auto;font-family:'JetBrains Mono',monospace;font-size:11.5px;
+    color:var(--ink);text-decoration:none;background:var(--paper);
+    border:1px solid var(--line);border-radius:20px;padding:6px 12px;white-space:nowrap;
+  }
+  .music-toc a.child{color:var(--muted);font-size:11px;padding:5px 10px;}
+  .music-toc a:hover{border-color:var(--stamp);color:var(--stamp);}
+
+  .music-flow{
+    background:rgba(244,241,229,0.93);
+    -webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);
+    padding:26px 20px 60px;
+  }
+  .music-flow h2.m-heading{
+    font-family:'Miriam Libre',serif;font-size:22px;font-weight:700;
+    margin:40px 0 16px;padding-top:20px;border-top:1px dashed var(--line-soft);
+  }
+  .music-flow section:first-child h2.m-heading{margin-top:0;padding-top:0;border-top:none;}
+  .music-flow h3.m-subheading{
+    font-family:'Miriam Libre',serif;font-size:17px;font-weight:700;
+    margin:28px 0 12px;color:var(--stamp);
+  }
+  .music-flow p{margin:0 0 16px;font-size:15px;line-height:1.85;}
+  .photo-cue{
+    font-size:12px;color:var(--muted);font-style:italic;margin:6px 0 20px;
+    padding-right:14px;border-right:2px solid var(--stamp-soft);
+  }
+  .spotify-embed{margin:14px 0 20px;}
+  .spotify-embed iframe{width:100%;height:80px;border:none;border-radius:8px;display:block;}
+  .spotify-embed .cap{font-size:11px;color:var(--muted);margin-top:4px;font-family:'JetBrains Mono',monospace;}
+  .music-link{
+    display:inline-flex;align-items:center;gap:6px;margin:6px 0 18px;
+    font-size:14px;color:var(--transit);text-decoration:none;border-bottom:1px solid var(--transit-soft);
+  }
+  .music-link:hover{border-color:var(--transit);}
+
+  @media (min-width:820px){
+    .music-toc{
+      flex-direction:column;position:fixed;top:0;bottom:0;right:0;width:220px;
+      border-bottom:none;border-left:1px solid var(--stamp);overflow-y:auto;
+      justify-content:flex-start;padding:100px 14px 30px;
+    }
+    .music-toc a{width:100%;}
+    body.music-active .wrap{margin-right:220px;}
+  }
+
+  @media (max-width:600px){
+    .section-inner{padding:22px 16px 26px;}
+    .tab{padding:9px 13px 11px;font-size:14px;}
+  }
+  /* ===== practical tabs: rich blocks ===== */
+  .block p{margin:0 0 14px;font-size:15px;line-height:1.85;}
+  .block h4{font-family:'Miriam Libre',serif;font-size:19px;margin:30px 0 10px;padding-top:18px;border-top:1px dashed var(--line);}
+  .block ol.notes{list-style:none;counter-reset:n;margin:0;padding:0;}
+  ol.notes > li{counter-increment:n;position:relative;padding:9px 28px 9px 0;border-bottom:1px dashed var(--line-soft);font-size:15px;}
+  ol.notes > li:last-child{border-bottom:none;}
+  ol.notes > li::before{content:counter(n) ".";position:absolute;right:0;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:12px;top:12px;}
+  ul.sub{list-style:none;margin:6px 0 0;padding:0;}
+  ul.sub li{position:relative;font-size:14px;border-bottom:none;padding:4px 18px 4px 0;}
+  ul.sub li::before{content:"–";position:absolute;right:0;color:var(--muted);}
+  .tag-opinion{font-family:'JetBrains Mono',monospace;font-size:10.5px;background:var(--stamp-soft);color:#5A2E14;border-radius:10px;padding:1px 7px;margin-inline-start:6px;white-space:nowrap;}
+  .tag-fact{font-family:'JetBrains Mono',monospace;font-size:10.5px;background:var(--transit-soft);color:var(--transit);border-radius:10px;padding:1px 7px;margin-inline-start:6px;white-space:nowrap;}
+  figure.inline-photo{margin:20px -4px 22px;}
+  figure.inline-photo img{width:100%;height:auto;max-height:70vh;object-fit:cover;display:block;border-radius:6px;border:1px solid var(--line);background:var(--line-soft);min-height:120px;}
+  figure.inline-photo.map img{object-fit:contain;max-height:none;}
+  figure.inline-photo figcaption{font-size:12px;color:var(--muted);margin-top:6px;font-family:'JetBrains Mono',monospace;direction:ltr;text-align:right;}
+  figure.inline-photo figcaption a{color:var(--muted);}
+  table.kv{width:100%;border-collapse:collapse;font-size:14.5px;margin:6px 0 4px;}
+  table.kv td{padding:9px 10px;border:1px solid var(--line-soft);vertical-align:top;}
+  table.kv td:first-child{width:22%;background:var(--paper);font-weight:700;white-space:nowrap;}
+  a.ext{display:inline-block;margin:4px 0 12px;font-size:14px;}
+  .note-date{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--stamp);}
+  /* ===== story tabs (coffee / food): full-bleed photo moments + dot nav ===== */
+  .tab.story{color:var(--transit);border-color:var(--transit-soft);}
+  .tab.story.active{border-color:var(--transit);}
+
+  .story-frame{
+    position:relative;background:#000;border-radius:0 0 10px 10px;overflow:hidden;
+    height:min(78vh, 720px);
+  }
+  .story-scroll{
+    height:100%;overflow-y:auto;scroll-snap-type:y mandatory;
+    -webkit-overflow-scrolling:touch;
+  }
+  .moment{
+    min-height:100%;scroll-snap-align:start;position:relative;
+    display:flex;flex-direction:column;justify-content:flex-end;
+    background-size:cover;background-position:center;background-color:#2b2820;
+  }
+  .moment::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(to top, rgba(20,16,10,.92) 0%, rgba(20,16,10,.55) 40%, rgba(20,16,10,0) 68%);
+  }
+  .moment-text{position:relative;z-index:2;padding:0 46px 26px 22px;}
+  .moment-text p.body{font-size:15px;line-height:1.75;margin:0 0 10px;color:#fff;}
+  .moment-text .caption{
+    display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;color:rgba(255,255,255,.6);
+  }
+  .moment-text .map-pin{
+    display:inline-flex;align-items:center;gap:3px;color:rgba(255,255,255,.6);
+    text-decoration:none;border-bottom:1px solid rgba(255,255,255,.3);
+  }
+  .moment-text .extra-link{
+    display:inline-block;margin-top:10px;font-size:12.5px;color:#fff;
+    background:rgba(255,255,255,.14);border-radius:20px;padding:6px 12px;text-decoration:none;
+  }
+  .story-toc{
+    position:absolute;top:0;bottom:0;left:10px;z-index:10;
+    display:flex;flex-direction:column;justify-content:center;gap:13px;
+  }
+  .story-toc a{
+    width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.4);
+    display:block;position:relative;flex:0 0 auto;
+  }
+  .story-toc a.current{background:var(--transit);width:11px;height:11px;}
+  .story-toc a .label{
+    position:absolute;left:18px;top:50%;transform:translateY(-50%);
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#fff;
+    background:rgba(20,16,10,.7);padding:4px 9px;border-radius:5px;
+    white-space:nowrap;opacity:0;transition:opacity .2s;pointer-events:none;
+  }
+  .story-toc a.current .label{opacity:1;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="title-block">
+      <h1 id="site-title"></h1>
+      <p id="site-subtitle"></p>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="קטגוריות" id="tabs"></nav>
+  <main class="panel" id="panel"></main>
+
+</div>
+
+<div id="music-bg"></div>
+
+<script src="content.js" charset="utf-8"></script>
+<script>
+  if (typeof CONTENT === 'undefined') {
+    document.querySelector('.wrap').innerHTML = `
+      <div class="error-box">
+        <b>לא הצלחתי לטעון את התוכן</b>
+        הקובץ <code>content.js</code> לא נמצא ליד <code>index.html</code>.
+        ודאו ששני הקבצים יושבים באותה תיקייה בדיוק, ושלא שינית את שם קובץ ה-content.js.
+        אם אתם צופים בזה כתצוגה מקדימה בצ'אט - נסו לפתוח את index.html ישירות מהתיקייה במחשב.
+      </div>`;
+    throw new Error('CONTENT is not defined — content.js failed to load');
+  }
+
+  const tabsEl = document.getElementById('tabs');
+  const panelEl = document.getElementById('panel');
+  const musicBgEl = document.getElementById('music-bg');
+
+  document.getElementById('site-title').textContent = CONTENT.meta.title;
+  document.getElementById('site-subtitle').textContent = CONTENT.meta.subtitle;
+
+  function esc(s){
+    const d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
+  function handleMissingPhoto(img){
+    const slot = img.parentElement;
+    slot.classList.add('empty');
+    const hint = document.createElement('span');
+    hint.className = 'hint';
+    hint.textContent = `images/${slot.dataset.tab}.jpeg`;
+    slot.appendChild(hint);
+    img.remove();
+  }
+
+  function rich(t){
+    // esc + simple [label](url) links + **bold**
+    return esc(t).replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>')
+                 .replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>');
+  }
+  function tagHtml(tag){
+    if(tag==='opinion') return '<span class="tag-opinion">דעה אישית</span>';
+    if(tag==='fact') return '<span class="tag-fact">עובדה</span>';
+    return '';
+  }
+  function photoHtml(b){
+    let cap = '';
+    if(b.caption || b.mapUrl){
+      cap = '<figcaption>' + (b.caption ? esc(b.caption) : '') +
+        (b.mapUrl ? ` <a href="${b.mapUrl}" target="_blank" rel="noopener">📍 map</a>` : '') + '</figcaption>';
+    }
+    return `<figure class="inline-photo${b.isMap?' map':''}"><img loading="lazy" src="images/${b.img}.jpeg" alt="" onerror="this.closest('figure').remove()">${cap}</figure>`;
+  }
+  function listHtml(items, ordered){
+    let out = ordered ? '<ol class="notes">' : '<ul class="notes">';
+    items.forEach(item => {
+      out += `<li>${rich(item.text)}${tagHtml(item.tag)}`;
+      if(item.sub){ out += '<ul class="sub">' + item.sub.map(x=>`<li>${rich(x)}</li>`).join('') + '</ul>'; }
+      out += '</li>';
+    });
+    return out + (ordered ? '</ol>' : '</ul>');
+  }
+  function blockHtml(block){
+    if(block.type === 'photo') return photoHtml(block);
+    let out = '<div class="block">';
+    if(block.type === 'h2') return `<div class="block"><h4>${esc(block.text)}</h4></div>`;
+    if(block.heading) out += `<h3>${esc(block.heading)}</h3>`;
+    if(block.type === 'p') out += `<p>${rich(block.text)}${tagHtml(block.tag)}</p>`;
+    if(block.type === 'table'){
+      out += '<table class="kv">' + block.rows.map(r=>`<tr><td>${esc(r[0])}</td><td>${rich(r[1])}</td></tr>`).join('') + '</table>';
+    }
+    if(block.type === 'link') out += `<a class="ext" href="${block.url}" target="_blank" rel="noopener">${esc(block.label)} ↗</a>`;
+    if(block.items) out += listHtml(block.items, block.ordered);
+    if(block.chips){
+      out += '<div class="chip-row">';
+      block.chips.forEach(c => { out += `<span class="chip">${esc(c)}</span>`; });
+      out += '</div>';
+    }
+    out += '</div>';
+    return out;
+  }
+
+  CONTENT.tabs.forEach((tab, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'tab' + (tab.isStart ? ' start' : '') + (i === 0 ? ' active' : '');
+    btn.setAttribute('role','tab');
+    btn.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+    btn.dataset.target = tab.id;
+    btn.innerHTML = (tab.isStart
+      ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>'
+      : '') + esc(tab.label);
+    tabsEl.appendChild(btn);
+
+    const section = document.createElement('section');
+    section.className = 'section' + (i === 0 ? ' active' : '');
+    section.id = tab.id;
+
+    let html = `<div class="section-inner">
+        <h2>${esc(tab.heading)}</h2>
+        ${tab.lede ? `<p class="lede">${esc(tab.lede)}</p>` : ''}
+    `;
+    tab.blocks.forEach(b => { html += blockHtml(b); });
+    if(tab.callout) html += `<div class="callout"><b>${esc(tab.callout)}</b></div>`;
+    if(tab.footnote) html += `<div class="foot">${tab.footnote}</div>`;
+    html += '</div>';
+
+    section.innerHTML = html;
+    panelEl.appendChild(section);
+  });
+
+  // ===== music tab: button + continuous-scroll section with scrollytelling bg =====
+
+  function spotifyEmbedUrl(url){
+    const m = url.match(/track\/([a-zA-Z0-9]+)/);
+    return m ? `https://open.spotify.com/embed/track/${m[1]}?utm_source=generator&theme=0` : url;
+  }
+
+  function musicBlockHtml(block){
+    if(block.type === 'p') return `<p>${esc(block.text)}</p>`;
+    if(block.type === 'h3') return `<h3 class="m-subheading" id="${block.id}">${esc(block.text)}</h3>`;
+    if(block.type === 'photo'){
+      const cap = block.caption ? '📷 ' + esc(block.caption) : '&nbsp;';
+      return `<p class="photo-cue" data-bg-marker="${block.img}"${block.caption ? '' : ' style="border:none;margin:0 0 10px;"'}>${cap}</p>`;
+    }
+    if(block.type === 'spotify'){
+      return `<div class="spotify-embed">
+        <iframe src="${spotifyEmbedUrl(block.url)}" loading="lazy" allow="encrypted-media"></iframe>
+        <div class="cap">${esc(block.label || '')}</div>
+      </div>`;
+    }
+    if(block.type === 'link'){
+      return `<a class="music-link" href="${block.url}" target="_blank" rel="noopener">${esc(block.label || block.url)} ↗</a>`;
+    }
+    return '';
+  }
+
+  // ===== story tabs (coffee / food): full-bleed moments + dot nav =====
+
+  function momentHtml(m, i){
+    const bg = m.img ? `data-bg="images/${m.img}.jpeg"` : '';
+    let inner = `<div class="moment-text">`;
+    if(m.text) inner += `<p class="body">${esc(m.text)}</p>`;
+    if(m.place || m.mapUrl){
+      inner += `<div class="caption">`;
+      if(m.place) inner += `<span class="place">${esc(m.place)}</span>`;
+      if(m.mapUrl) inner += `<a class="map-pin" href="${m.mapUrl}" target="_blank" rel="noopener">📍 map</a>`;
+      inner += `</div>`;
+    }
+    if(m.link) inner += `<a class="extra-link" href="${m.link.url}" target="_blank" rel="noopener">${esc(m.link.label)}</a>`;
+    inner += `</div>`;
+    return `<section class="moment" id="${m._id}" ${bg}>${inner}</section>`;
+  }
+
+  function buildStoryTab(data){
+    const btn = document.createElement('button');
+    btn.className = 'tab story';
+    btn.setAttribute('role','tab');
+    btn.setAttribute('aria-selected','false');
+    btn.dataset.target = data.id;
+    btn.textContent = data.label;
+    tabsEl.appendChild(btn);
+
+    data.moments.forEach((m, i) => { m._id = `${data.id}-m${i}`; });
+
+    let tocHtml = '';
+    data.moments.forEach((m, i) => {
+      const label = m.place || `#${i+1}`;
+      tocHtml += `<a href="#${m._id}"${i===0?' class="current"':''}><span class="label">${esc(label)}</span></a>`;
+    });
+
+    const momentsHtml = data.moments.map((m,i) => momentHtml(m,i)).join('');
+
+    const section = document.createElement('section');
+    section.className = 'section';
+    section.id = data.id;
+    section.innerHTML = `
+      <div class="story-frame">
+        <nav class="story-toc">${tocHtml}</nav>
+        <div class="story-scroll">${momentsHtml}</div>
+      </div>`;
+    panelEl.appendChild(section);
+
+    const scroller = section.querySelector('.story-scroll');
+    const tocLinks = section.querySelectorAll('.story-toc a');
+    const momentEls = section.querySelectorAll('.moment');
+
+    tocLinks.forEach(a => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        tocLinks.forEach(t => t.classList.remove('current'));
+        a.classList.add('current');
+        document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth'});
+      });
+    });
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          const id = entry.target.id;
+          tocLinks.forEach(a => a.classList.toggle('current', a.getAttribute('href') === '#'+id));
+        }
+      });
+    }, { root: scroller, threshold: 0.6 });
+    momentEls.forEach(m => io.observe(m));
+
+    // lazy-load background photos shortly before they scroll into view
+    const lazy = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          const el = entry.target;
+          if(el.dataset.bg){ el.style.backgroundImage = `url('${el.dataset.bg}')`; delete el.dataset.bg; }
+          lazy.unobserve(el);
+        }
+      });
+    }, { root: scroller, rootMargin: '150% 0px' });
+    momentEls.forEach(m => lazy.observe(m));
+  }
+
+  function buildMusicTab(){
+    const music = CONTENT.music;
+    if(!music) return;
+
+    // tab button, appended at the end (opposite the start tab)
+    const btn = document.createElement('button');
+    btn.className = 'tab music';
+    btn.setAttribute('role','tab');
+    btn.setAttribute('aria-selected','false');
+    btn.dataset.target = music.id;
+    btn.textContent = music.label;
+    tabsEl.appendChild(btn);
+
+    // background layers
+    let bgHtml = '';
+    const allImgs = new Set();
+    music.sections.forEach(sec => sec.blocks.forEach(b => { if(b.type === 'photo') allImgs.add(b.img); }));
+    allImgs.forEach(imgKey => {
+      bgHtml += `<div class="bg-layer" data-bg="${imgKey}">
+        <img loading="lazy" src="images/${imgKey}.jpeg" alt="" onerror="this.remove()">
+      </div>`;
+    });
+    musicBgEl.innerHTML = bgHtml;
+
+    // toc
+    let tocHtml = '';
+    music.toc.forEach(item => {
+      tocHtml += `<a href="#${item.id}">${esc(item.label)}</a>`;
+      if(item.children){
+        item.children.forEach(c => { tocHtml += `<a href="#${c.id}" class="child">↳ ${esc(c.label)}</a>`; });
+      }
+    });
+
+    // flow content
+    let flowHtml = '';
+    music.sections.forEach(sec => {
+      flowHtml += `<section id="${sec.id}"><h2 class="m-heading">${esc(sec.heading)}</h2>`;
+      sec.blocks.forEach(b => { flowHtml += musicBlockHtml(b); });
+      flowHtml += `</section>`;
+    });
+
+    const section = document.createElement('section');
+    section.className = 'section';
+    section.id = music.id;
+    section.innerHTML = `
+      <nav class="music-toc">${tocHtml}</nav>
+      <div class="music-flow">${flowHtml}</div>
+    `;
+    panelEl.appendChild(section);
+
+    // scrollytelling: swap active background layer as photo-cue markers cross viewport center
+    const markers = section.querySelectorAll('[data-bg-marker]');
+    const layers = musicBgEl.querySelectorAll('.bg-layer');
+    if(markers.length && layers.length){
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting){
+            const key = entry.target.dataset.bgMarker;
+            layers.forEach(l => l.classList.toggle('active', l.dataset.bg === key));
+          }
+        });
+      }, { threshold: 0, rootMargin: '-40% 0px -40% 0px' });
+      markers.forEach(m => io.observe(m));
+    }
+  }
+
+  if(CONTENT.coffee) buildStoryTab(CONTENT.coffee);
+  if(CONTENT.food) buildStoryTab(CONTENT.food);
+  buildMusicTab();
+
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected','true');
+      document.getElementById(tab.dataset.target).classList.add('active');
+
+      const isMusic = tab.dataset.target === (CONTENT.music && CONTENT.music.id);
+      document.body.classList.toggle('music-active', isMusic);
+      musicBgEl.style.display = isMusic ? 'block' : 'none';
+
+      panelEl.scrollIntoView({behavior:'smooth', block:'nearest'});
+    });
+  });
+</script>
+</body>
+</html>
