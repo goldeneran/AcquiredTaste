@@ -28,18 +28,35 @@
 
   /* ===== landing ===== */
   #landing{
-    min-height:100svh;display:flex;flex-direction:column;justify-content:center;
-    max-width:640px;margin:0 auto;padding:40px 22px;
+    min-height:100svh;color:#fff;background-color:#2b2820;
+    background-image:
+      linear-gradient(to bottom, rgba(20,16,10,.5) 0%, rgba(20,16,10,0) 26%, rgba(20,16,10,0) 36%, rgba(20,16,10,.84) 64%, rgba(20,16,10,.95) 100%),
+      url('images/IMG_9102.jpeg');
+    background-size:cover;background-position:50% 22%;background-repeat:no-repeat;
+  }
+  .land-inner{
+    min-height:100svh;max-width:640px;margin:0 auto;padding:34px 22px 30px;
+    display:flex;flex-direction:column;justify-content:space-between;gap:clamp(230px,32svh,330px);
+  }
+  @media (min-width:900px){
+    #landing{
+      background-image:
+        linear-gradient(to right, rgba(20,16,10,.88) 0%, rgba(20,16,10,.78) 36%, rgba(20,16,10,0) 62%),
+        url('images/IMG_9102.jpeg');
+      background-position:50% 16%;
+    }
+    .land-inner{max-width:540px;margin-inline-start:auto;margin-inline-end:5vw;justify-content:center;gap:32px;}
   }
   #landing h1{
-    font-family:'Miriam Libre',serif;font-weight:700;
+    font-family:'Miriam Libre',serif;font-weight:700;color:#fff;text-shadow:0 1px 14px rgba(0,0,0,.45);
     font-size:clamp(44px,12vw,68px);margin:0 0 8px;letter-spacing:-1px;line-height:1.05;
   }
   #landing .sub{
-    margin:0 0 22px;color:var(--muted);font-size:16px;
-    border-bottom:2px solid var(--ink);padding-bottom:18px;
+    margin:0;color:rgba(255,255,255,.92);font-size:16px;text-shadow:0 1px 10px rgba(0,0,0,.5);
+    border-bottom:2px solid rgba(255,255,255,.7);padding-bottom:16px;
   }
-  #landing .intro{font-size:16px;line-height:1.9;margin:0 0 28px;}
+  #landing .intro p{font-size:15.5px;line-height:1.85;margin:0 0 12px;color:rgba(255,255,255,.95);}
+  #landing .intro{margin:0 0 20px;}
   .choices{display:flex;flex-direction:column;gap:12px;}
   .choice{
     display:flex;justify-content:space-between;align-items:center;text-decoration:none;
@@ -49,8 +66,8 @@
   }
   .choice small{display:block;font-family:'Varela Round',sans-serif;font-weight:400;font-size:13px;color:var(--muted);margin-top:2px;}
   .choice .ar{font-size:26px;color:var(--muted);}
-  .choice.dark{background:#2b2820;border-color:#2b2820;color:#fff;}
-  .choice.dark small,.choice.dark .ar{color:rgba(255,255,255,.7);}
+  .choice.dark{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.65);color:#fff;-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);}
+  .choice.dark small,.choice.dark .ar{color:rgba(255,255,255,.8);}
   .choice:active{transform:scale(.99);}
 
   /* ===== part view ===== */
@@ -104,8 +121,17 @@
   a.ext{display:inline-block;margin:4px 0 12px;font-size:14px;}
 
   figure.inline-photo{margin:20px 0 22px;}
-  figure.inline-photo img{width:100%;height:auto;max-height:70vh;object-fit:cover;display:block;border-radius:6px;border:1px solid var(--line);background:var(--line-soft);min-height:120px;}
-  figure.inline-photo.map img{object-fit:contain;max-height:none;}
+  /* תמונות מוצגות במלואן, בלי חיתוך; אם התמונה גבוהה, יהיו שוליים בצדדים */
+  figure.inline-photo img{width:100%;height:auto;max-height:80vh;object-fit:contain;display:block;border-radius:6px;border:1px solid var(--line);background:var(--line-soft);min-height:120px;}
+  figure.inline-photo.zoomable img{cursor:zoom-in;}
+  .zoom-hint{font-size:12.5px;color:var(--muted);margin-top:6px;}
+  .apple-only{display:none !important;}
+  html.is-apple .apple-only{display:inline-flex !important;}
+  html.is-apple .apple-only[hidden]{display:none !important;}
+  .apple-btn{
+    align-items:center;gap:6px;margin-top:8px;text-decoration:none;font-size:14px;
+    color:var(--ink);background:var(--paper);border:1px solid var(--ink);border-radius:20px;padding:7px 16px;
+  }
   figure.inline-photo figcaption{font-size:12px;color:var(--muted);margin-top:6px;font-family:'JetBrains Mono',monospace;direction:ltr;text-align:right;}
   figure.inline-photo figcaption a{color:var(--muted);}
 
@@ -125,15 +151,16 @@
   /* ===== story sections ===== */
   .sec.story{background:#1c1710;}
   .sec.story .sec-title{color:#fff;padding:26px 20px 18px;font-size:26px;}
+  /* הטקסט בחלק העליון, כדי שהנושא בתחתית התמונה יישאר גלוי */
   .moment{
-    min-height:min(82svh,680px);position:relative;display:flex;flex-direction:column;justify-content:flex-end;
-    background-size:cover;background-position:center;background-color:#2b2820;
+    min-height:min(82svh,680px);position:relative;display:flex;flex-direction:column;justify-content:flex-start;
+    background-size:cover;background-position:center bottom;background-color:#2b2820;
   }
   .moment::after{
     content:"";position:absolute;inset:0;
-    background:linear-gradient(to top, rgba(20,16,10,.92) 0%, rgba(20,16,10,.55) 42%, rgba(20,16,10,0) 70%);
+    background:linear-gradient(to bottom, rgba(20,16,10,.92) 0%, rgba(20,16,10,.6) 38%, rgba(20,16,10,0) 66%);
   }
-  .moment-text{position:relative;z-index:2;padding:80px 22px 26px 40px;}
+  .moment-text{position:relative;z-index:2;padding:26px 22px 40svh 40px;}
   .moment-text p.body{font-size:15px;line-height:1.75;margin:0 0 10px;color:#fff;}
   .moment-text .caption{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:rgba(255,255,255,.65);}
   .moment-text .map-pin{display:inline-flex;align-items:center;gap:3px;color:rgba(255,255,255,.65);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.3);}
@@ -166,16 +193,46 @@
   .error-box{background:#F4E4DE;border:1px solid var(--stamp);border-radius:8px;padding:18px 20px;margin:20px;font-size:14px;color:#5A2E14;}
   .error-box code{background:rgba(0,0,0,0.08);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;}
 
+  /* ===== image viewer (zoom + pan) ===== */
+  #zoomer{position:fixed;inset:0;z-index:200;background:#0f0c08;}
+  #zstage{position:absolute;inset:0;overflow:hidden;touch-action:none;display:flex;align-items:center;justify-content:center;cursor:grab;}
+  #zstage.drag{cursor:grabbing;}
+  #zimg{max-width:100%;max-height:100%;object-fit:contain;transform-origin:center center;will-change:transform;user-select:none;-webkit-user-select:none;-webkit-user-drag:none;}
+  #zclose{
+    position:absolute;top:calc(env(safe-area-inset-top) + 12px);right:14px;z-index:3;
+    width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.5);
+    background:rgba(20,16,10,.7);color:#fff;font-size:20px;cursor:pointer;line-height:1;
+  }
+  #zbar{
+    position:absolute;left:0;right:0;bottom:calc(env(safe-area-inset-bottom) + 14px);z-index:3;
+    display:flex;flex-direction:column;align-items:center;gap:10px;pointer-events:none;
+  }
+  #zbar > *{pointer-events:auto;}
+  #zctl{display:flex;gap:8px;}
+  #zctl button{
+    width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.45);
+    background:rgba(20,16,10,.7);color:#fff;font-size:20px;cursor:pointer;line-height:1;
+  }
+  #zhint{font-size:12.5px;color:rgba(255,255,255,.75);background:rgba(20,16,10,.6);padding:5px 12px;border-radius:14px;transition:opacity .6s;}
+  #zhint.off{opacity:0;}
+  #zapple{background:rgba(255,255,255,.95);}
+
   @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;}}
 </style>
 </head>
 <body>
 
 <main id="landing">
-  <h1 id="site-title"></h1>
-  <p class="sub" id="site-subtitle"></p>
-  <p class="intro" id="site-intro"></p>
-  <div class="choices" id="choices"></div>
+  <div class="land-inner">
+    <div class="land-top">
+      <h1 id="site-title"></h1>
+      <p class="sub" id="site-subtitle"></p>
+    </div>
+    <div class="land-bottom">
+      <div class="intro" id="site-intro"></div>
+      <div class="choices" id="choices"></div>
+    </div>
+  </div>
 </main>
 
 <div id="view" hidden>
@@ -186,6 +243,16 @@
   <div id="content"></div>
 </div>
 
+<div id="zoomer" hidden role="dialog" aria-label="תצוגת מפה מוגדלת">
+  <div id="zstage"><img id="zimg" alt="" draggable="false"></div>
+  <button id="zclose" aria-label="סגירה">✕</button>
+  <div id="zbar">
+    <div id="zhint">צביטה להגדלה · גרירה להזזה · לחיצה כפולה לזום</div>
+    <div id="zctl" dir="ltr"><button id="zout" aria-label="הקטנה">−</button><button id="zreset" aria-label="איפוס">⟲</button><button id="zin" aria-label="הגדלה">+</button></div>
+    <a id="zapple" class="apple-btn apple-only" href="#" target="_blank" rel="noopener">פתח באפל מפות ↗</a>
+  </div>
+</div>
+
 <script src="content.js" charset="utf-8"></script>
 <script>
   if (typeof CONTENT === 'undefined') {
@@ -194,6 +261,11 @@
   }
 
   const $ = id => document.getElementById(id);
+  // מכשירי אפל (אייפון, אייפד, מק): רק להם מוצג הכפתור "פתח באפל מפות"
+  if(/iPhone|iPad|iPod|Macintosh|MacIntel/.test(navigator.userAgent + ' ' + navigator.platform)) document.documentElement.classList.add('is-apple');
+  const APPLE_URL = (CONTENT.meta && CONTENT.meta.appleMapsUrl) || '';
+  // כפתור אפל מפות מוצג רק למפות הטיולים (MapTrip1-3), לא לכל מפה
+  const isTripMap = b => !!(APPLE_URL && b.isMap && /^MapTrip/.test(b.img || ''));
   const IMG = n => `images/${n}.jpeg`;
   // smooth jump that re-aims if lazy-loading images shift the layout on the way
   function jumpTo(el){
@@ -254,7 +326,12 @@
       cap = '<figcaption>' + (b.caption ? esc(b.caption) : '') +
         (b.mapUrl ? ` <a href="${b.mapUrl}" target="_blank" rel="noopener">📍 map</a>` : '') + '</figcaption>';
     }
-    return `<figure class="inline-photo${(b.isMap || full) ? ' map' : ''}"><img loading="lazy" src="${IMG(b.img)}" alt="" onerror="this.closest('figure').remove()">${cap}</figure>`;
+    let extra = '';
+    if(b.isMap){
+      extra = '<div class="zoom-hint">🔍 לחצו על המפה כדי להגדיל ולהזיז</div>' +
+        (isTripMap(b) ? `<a class="apple-btn apple-only" href="${APPLE_URL}" target="_blank" rel="noopener">פתח באפל מפות ↗</a>` : '');
+    }
+    return `<figure class="inline-photo${(b.isMap || full) ? ' map' : ''}${b.isMap ? ' zoomable' : ''}"${isTripMap(b) ? ' data-apple="1"' : ''}><img loading="lazy" src="${IMG(b.img)}" alt="" onerror="this.closest('figure').remove()">${cap}${extra}</figure>`;
   }
   function listHtml(items, ordered){
     let out = ordered ? '<ol class="notes">' : '<ul class="notes">';
@@ -335,7 +412,7 @@
   /* ---------- landing ---------- */
   $('site-title').textContent = CONTENT.meta.title;
   $('site-subtitle').textContent = CONTENT.meta.subtitle;
-  $('site-intro').textContent = CONTENT.meta.intro || '';
+  $('site-intro').innerHTML = (CONTENT.meta.intro || '').split(/\n+/).filter(Boolean).map(t => `<p>${esc(t)}</p>`).join('');
   $('choices').innerHTML = CONTENT.parts.map((p, i) =>
     `<a class="choice${i === 1 ? ' dark' : ''}" href="#${p.id}"><span>${esc(p.button)}</span><span class="ar">‹</span></a>`).join('');
 
@@ -422,6 +499,110 @@
       jumpTo(document.getElementById(a.dataset.jump));
     }));
   }
+
+  /* ---------- image viewer: pinch / drag / wheel / double-tap ---------- */
+  (function(){
+    const zoomer = $('zoomer'), stage = $('zstage'), zimg = $('zimg'), hint = $('zhint');
+    const Z = {s:1, x:0, y:0};
+    const isTouch = 'ontouchstart' in window;
+    const pts = new Map();
+    let pinch = null, tap = null, lastTap = null, moved = false, hintTimer = null;
+
+    function size(){ const r = stage.getBoundingClientRect(); return {W:r.width, H:r.height, L:r.left, T:r.top}; }
+    function apply(){
+      const {W,H} = size(), w = zimg.offsetWidth, h = zimg.offsetHeight;
+      const mx = Math.max(0, (w*Z.s - W)/2) + 60, my = Math.max(0, (h*Z.s - H)/2) + 60;
+      Z.x = Math.max(-mx, Math.min(mx, Z.x)); Z.y = Math.max(-my, Math.min(my, Z.y));
+      zimg.style.transform = `translate(${Z.x}px,${Z.y}px) scale(${Z.s})`;
+    }
+    function zoomAt(cx, cy, ns){
+      ns = Math.max(1, Math.min(6, ns));
+      const {W,H,L,T} = size(), px = cx - L - W/2, py = cy - T - H/2, k = ns / Z.s;
+      Z.x = px - (px - Z.x) * k; Z.y = py - (py - Z.y) * k; Z.s = ns;
+      if(Z.s === 1){ Z.x = 0; Z.y = 0; }
+      apply();
+    }
+    function reset(){ Z.s = 1; Z.x = 0; Z.y = 0; apply(); }
+    function zoomCenter(f){ const {W,H,L,T} = size(); zoomAt(L + W/2, T + H/2, Z.s * f); }
+
+    function open(src, apple){
+      zimg.src = src; reset();
+      const a = $('zapple'); a.href = APPLE_URL || '#'; a.hidden = !apple;
+      zoomer.hidden = false; document.body.style.overflow = 'hidden';
+      hint.classList.remove('off'); clearTimeout(hintTimer); hintTimer = setTimeout(() => hint.classList.add('off'), 3500);
+    }
+    function close(){ zoomer.hidden = true; document.body.style.overflow = ''; pts.clear(); pinch = null; }
+
+    document.addEventListener('click', e => {
+      const img = e.target.closest('figure.zoomable img');
+      if(img) open(img.currentSrc || img.src, !!img.closest('figure').dataset.apple);
+    });
+    window.addEventListener('hashchange', close);
+    $('zclose').addEventListener('click', close);
+    $('zin').addEventListener('click', () => zoomCenter(1.5));
+    $('zout').addEventListener('click', () => zoomCenter(1/1.5));
+    $('zreset').addEventListener('click', reset);
+    document.addEventListener('keydown', e => {
+      if(zoomer.hidden) return;
+      if(e.key === 'Escape') close();
+      else if(e.key === '+' || e.key === '=') zoomCenter(1.4);
+      else if(e.key === '-') zoomCenter(1/1.4);
+      else if(e.key === '0') reset();
+    });
+    window.addEventListener('resize', () => { if(!zoomer.hidden) apply(); });
+
+    const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+    stage.addEventListener('pointerdown', e => {
+      stage.setPointerCapture(e.pointerId);
+      pts.set(e.pointerId, {x:e.clientX, y:e.clientY});
+      stage.classList.add('drag');
+      if(pts.size === 1){ tap = {x:e.clientX, y:e.clientY, t:Date.now()}; moved = false; }
+      if(pts.size === 2){
+        const [a, b] = [...pts.values()];
+        pinch = {d:dist(a, b) || 1, s:Z.s, mx:(a.x + b.x)/2, my:(a.y + b.y)/2};
+        moved = true;
+      }
+    });
+    stage.addEventListener('pointermove', e => {
+      const p = pts.get(e.pointerId); if(!p) return;
+      const dx = e.clientX - p.x, dy = e.clientY - p.y;
+      p.x = e.clientX; p.y = e.clientY;
+      if(pts.size === 2 && pinch){
+        const [a, b] = [...pts.values()], mx = (a.x + b.x)/2, my = (a.y + b.y)/2;
+        zoomAt(mx, my, pinch.s * dist(a, b) / pinch.d);
+        Z.x += mx - pinch.mx; Z.y += my - pinch.my; pinch.mx = mx; pinch.my = my; apply();
+      } else if(pts.size === 1){
+        if(tap && Math.hypot(e.clientX - tap.x, e.clientY - tap.y) > 8) moved = true;
+        if(Z.s > 1){ Z.x += dx; Z.y += dy; apply(); }
+      }
+    });
+    function up(e){
+      if(!pts.has(e.pointerId)) return;
+      const wasOne = pts.size === 1;
+      pts.delete(e.pointerId);
+      if(pts.size < 2) pinch = null;
+      if(pts.size === 0) stage.classList.remove('drag');
+      if(wasOne && tap && !moved && Date.now() - tap.t < 300){
+        const now = Date.now();
+        if(lastTap && now - lastTap.t < 320 && Math.hypot(tap.x - lastTap.x, tap.y - lastTap.y) < 30){
+          if(Z.s > 1.05) reset(); else zoomAt(tap.x, tap.y, 2.6);
+          lastTap = null;
+        } else lastTap = {t:now, x:tap.x, y:tap.y};
+      }
+    }
+    stage.addEventListener('pointerup', up);
+    stage.addEventListener('pointercancel', up);
+    stage.addEventListener('wheel', e => {
+      e.preventDefault();
+      if(e.ctrlKey || Z.s === 1) zoomAt(e.clientX, e.clientY, Z.s * Math.exp(-e.deltaY * (e.ctrlKey ? 0.01 : 0.002)));
+      else { Z.x -= e.deltaX; Z.y -= e.deltaY; apply(); }
+    }, {passive:false});
+    // Safari desktop trackpad pinch
+    let gs = 1;
+    stage.addEventListener('gesturestart', e => { e.preventDefault(); gs = Z.s; });
+    stage.addEventListener('gesturechange', e => { e.preventDefault(); if(!isTouch) zoomAt(e.clientX, e.clientY, gs * e.scale); });
+    stage.addEventListener('gestureend', e => e.preventDefault());
+  })();
 
   $('back').addEventListener('click', () => { location.hash = ''; });
   function route(){ showPart(location.hash.replace('#', '')); }
