@@ -27,25 +27,31 @@
   [hidden]{display:none !important;}
 
   /* ===== landing ===== */
-  #landing{
-    min-height:100svh;color:#fff;background-color:#2b2820;
-    background-image:
-      linear-gradient(to bottom, rgba(20,16,10,.5) 0%, rgba(20,16,10,0) 26%, rgba(20,16,10,0) 36%, rgba(20,16,10,.84) 64%, rgba(20,16,10,.95) 100%),
-      url('images/IMG_9102.jpeg');
-    background-size:cover;background-position:50% 22%;background-repeat:no-repeat;
+  /* התמונה קבועה במקום וממלאת את כל גובה המסך; רק הטקסט גולל מעליה */
+  #landing{position:relative;isolation:isolate;min-height:100svh;color:#fff;background:#1c1710;}
+  #landing::before,#landing::after{
+    content:"";position:fixed;top:0;left:0;width:100%;height:100vh;height:100lvh;z-index:-1;pointer-events:none;
   }
+  #landing::before{background:url('images/IMG_9102.jpeg') 50% 22% / cover no-repeat;}
+  #landing::after{background:linear-gradient(to bottom, rgba(20,16,10,.5) 0%, rgba(20,16,10,0) 26%);}
   .land-inner{
-    min-height:100svh;max-width:640px;margin:0 auto;padding:34px 22px 30px;
+    min-height:100svh;max-width:640px;margin:0 auto;padding:34px 22px 0;
     display:flex;flex-direction:column;justify-content:space-between;gap:clamp(230px,32svh,330px);
   }
+  .land-bottom{
+    margin:0 -22px;padding:90px 22px 30px;
+    background:linear-gradient(to bottom, rgba(20,16,10,0), rgba(20,16,10,.88) 100px);
+  }
   @media (min-width:900px){
-    #landing{
-      background-image:
-        linear-gradient(to right, rgba(20,16,10,.88) 0%, rgba(20,16,10,.78) 36%, rgba(20,16,10,0) 62%),
-        url('images/IMG_9102.jpeg');
-      background-position:50% 16%;
+    /* במחשב: התמונה במלואה, בגובה המסך כולו, בצד שמאל; הטקסט בצד ימין */
+    #landing::before{width:min(55vw, 75lvh);background:url('images/IMG_9102.jpeg') center / contain no-repeat;}
+    #landing::after{display:none;}
+    .land-inner{
+      max-width:min(560px, calc(100vw - min(55vw, 75lvh) - 90px));
+      margin-inline-start:clamp(24px,5vw,80px);margin-inline-end:auto;
+      justify-content:center;gap:32px;padding:34px 0;
     }
-    .land-inner{max-width:540px;margin-inline-start:auto;margin-inline-end:5vw;justify-content:center;gap:32px;}
+    .land-bottom{margin:0;padding:0;background:none;}
   }
   #landing h1{
     font-family:'Miriam Libre',serif;font-weight:700;color:#fff;text-shadow:0 1px 14px rgba(0,0,0,.45);
@@ -154,30 +160,52 @@
   /* הטקסט בחלק העליון, כדי שהנושא בתחתית התמונה יישאר גלוי */
   .moment{
     min-height:min(82svh,680px);position:relative;display:flex;flex-direction:column;justify-content:flex-start;
-    background-size:cover;background-position:center bottom;background-color:#2b2820;
+    background-image:var(--bg,none);background-size:cover;background-position:center bottom;background-color:#2b2820;
+    scroll-margin-top:62px;
   }
   .moment::after{
     content:"";position:absolute;inset:0;
     background:linear-gradient(to bottom, rgba(20,16,10,.92) 0%, rgba(20,16,10,.6) 38%, rgba(20,16,10,0) 66%);
   }
   .moment-text{position:relative;z-index:2;padding:26px 22px 40svh 40px;}
+  .m-pic{display:none;}
+  /* מסך רחב: תמונה לאורך מוצגת במלואה בצד שמאל והטקסט בצד ימין. תמונה לרוחב נשארת עם הטקסט מעליה (class land) */
+  @media (min-width:900px){
+    .moment:not(.land){min-height:min(92svh,820px);justify-content:center;background-image:none;}
+    .moment:not(.land)::after{display:none;}
+    .moment:not(.land) .m-pic{
+      display:block;position:absolute;top:0;bottom:0;left:0;width:54%;
+      background:var(--bg,none) center / contain no-repeat;
+    }
+    .moment:not(.land) .moment-text{width:46%;align-self:flex-start;padding:48px 32px 48px 40px;}
+  }
   .moment-text p.body{font-size:15px;line-height:1.75;margin:0 0 10px;color:#fff;}
   .moment-text .caption{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:rgba(255,255,255,.65);}
   .moment-text .map-pin{display:inline-flex;align-items:center;gap:3px;color:rgba(255,255,255,.65);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.3);}
   .moment-text .extra-link{display:inline-block;margin-top:10px;font-size:12.5px;color:#fff;background:rgba(255,255,255,.14);border-radius:20px;padding:6px 12px;text-decoration:none;}
   .story-toc{
     position:fixed;top:50%;left:8px;transform:translateY(-50%);z-index:40;
-    display:none;flex-direction:column;gap:8px;max-height:80vh;
+    display:none;flex-direction:column;align-items:flex-start;gap:10px;max-height:80vh;
   }
   .story-toc.show{display:flex;}
+  .toc-btn{
+    width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,.55);padding:0;
+    background:rgba(20,16,10,.8);color:#fff;font-size:15px;line-height:1;cursor:pointer;
+  }
+  .toc-dots{display:flex;flex-direction:column;gap:8px;padding-left:11px;}
   .story-toc a{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.45);display:block;position:relative;flex:0 0 auto;box-shadow:0 0 0 1px rgba(0,0,0,.25);}
   .story-toc a.current{background:#7BC08A;width:11px;height:11px;margin-left:-1px;}
-  .story-toc a .label{
-    position:absolute;left:18px;top:50%;transform:translateY(-50%);
-    font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#fff;
-    background:rgba(20,16,10,.78);padding:4px 9px;border-radius:5px;white-space:nowrap;opacity:0;transition:opacity .2s;pointer-events:none;
+  /* רשימת הפרקים: נסגרת כברירת מחדל, נפתחת בלחיצה על הכפתור */
+  .toc-panel{
+    position:absolute;left:42px;top:50%;transform:translateY(-50%);min-width:150px;max-height:70vh;overflow-y:auto;
+    background:rgba(20,16,10,.95);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:6px;
+    box-shadow:0 8px 30px rgba(0,0,0,.5);
   }
-  .story-toc a.current .label{opacity:1;}
+  .toc-panel button{
+    display:block;width:100%;background:none;border:0;color:#fff;text-align:right;white-space:nowrap;
+    font-family:'Miriam Libre',serif;font-size:16px;padding:9px 14px;border-radius:8px;cursor:pointer;
+  }
+  .toc-panel button.current{background:rgba(123,192,138,.28);}
 
   /* ===== music ===== */
   .sec.music{background:var(--paper-card);border-inline:1px solid var(--line-soft);}
@@ -254,6 +282,7 @@
 </div>
 
 <script src="content.js" charset="utf-8"></script>
+<script src="menu.js" charset="utf-8"></script>
 <script>
   if (typeof CONTENT === 'undefined') {
     document.body.innerHTML = `<div class="error-box"><b>לא הצלחתי לטעון את התוכן.</b><br>הקובץ <code>content.js</code> לא נמצא ליד <code>index.html</code>. ודאו ששניהם באותה תיקייה.</div>`;
@@ -374,15 +403,26 @@
     }
     if(m.link) inner += `<a class="extra-link" href="${m.link.url}" target="_blank" rel="noopener">${esc(m.link.label)}</a>`;
     inner += '</div>';
-    return `<div class="moment" id="${sid}-m${i}" ${bg}>${inner}</div>`;
+    return `<div class="moment${m.img ? '' : ' land'}" id="${sid}-m${i}" data-i="${i}" ${bg}><div class="m-pic"></div>${inner}</div>`;
   }
+  // תפריט הפרק (menu.js): כותרות הפרקים מהמסמך המקורי. at = מספר הרגע (מ-1) שבו הפרק מתחיל
+  function storyMenu(id){ return (typeof MENU !== 'undefined' && MENU[id]) || null; }
   function storySection(item){
     const moments = item.moments.map((m,i) => momentHtml(m, item.id, i)).join('');
-    const dots = item.moments.map((m,i) =>
-      `<a href="#${item.id}-m${i}" data-target="${item.id}-m${i}">${m.place ? `<span class="label">${esc(m.place)}</span>` : ''}</a>`).join('');
+    const menu = storyMenu(item.id);
+    let nav;
+    if(menu){
+      const dots = menu.map(e => `<a href="#${item.id}-m${e.at-1}" data-target="${item.id}-m${e.at-1}"></a>`).join('');
+      const list = menu.map(e => `<button type="button" data-target="${item.id}-m${e.at-1}">${esc(e.title)}</button>`).join('');
+      nav = `<button type="button" class="toc-btn" aria-label="תוכן הפרק" aria-expanded="false">☰</button>
+        <div class="toc-dots">${dots}</div><div class="toc-panel" hidden>${list}</div>`;
+    } else {
+      nav = '<div class="toc-dots">' + item.moments.map((m,i) =>
+        `<a href="#${item.id}-m${i}" data-target="${item.id}-m${i}"></a>`).join('') + '</div>';
+    }
     return `<section class="sec story" id="sec-${item.id}" data-story="${item.id}">
       <h2 class="sec-title">${esc(item.label)}</h2>
-      <nav class="story-toc" id="toc-${item.id}">${dots}</nav>
+      <nav class="story-toc" id="toc-${item.id}">${nav}</nav>
       ${moments}</section>`;
   }
 
@@ -461,7 +501,14 @@
       entries.forEach(en => {
         if(en.isIntersecting){
           const el = en.target;
-          if(el.dataset.bg){ el.style.backgroundImage = `url('${el.dataset.bg}')`; delete el.dataset.bg; }
+          if(el.dataset.bg){
+            const src = el.dataset.bg; delete el.dataset.bg;
+            el.style.setProperty('--bg', `url('${src}')`);
+            // תמונה לרוחב נשארת בפריסת "טקסט מעל התמונה" גם במסך רחב
+            const im = new Image();
+            im.onload = () => { if(im.naturalWidth > im.naturalHeight) el.classList.add('land'); };
+            im.src = src;
+          }
           ioBg.unobserve(el);
         }
       });
@@ -472,21 +519,38 @@
     // story dot navs
     document.querySelectorAll('.sec.story').forEach(sec => {
       const toc = sec.querySelector('.story-toc');
-      const dots = [...toc.querySelectorAll('a')];
-      dots.forEach(a => a.addEventListener('click', e => {
+      const dots = [...toc.querySelectorAll('.toc-dots a')];
+      const items = [...toc.querySelectorAll('.toc-panel button')];
+      const panel = toc.querySelector('.toc-panel'), tbtn = toc.querySelector('.toc-btn');
+      const menu = storyMenu(sec.dataset.story);
+      const starts = menu ? menu.map(e => e.at - 1) : null;
+      function setCur(idx){
+        let k = idx;
+        if(starts){ k = -1; starts.forEach((s, j) => { if(s <= idx) k = j; }); }
+        dots.forEach((d, j) => d.classList.toggle('current', j === k));
+        items.forEach((d, j) => d.classList.toggle('current', j === k));
+      }
+      function closePanel(){ if(panel){ panel.hidden = true; tbtn.setAttribute('aria-expanded', 'false'); } }
+      if(tbtn) tbtn.addEventListener('click', e => {
+        e.stopPropagation();
+        panel.hidden = !panel.hidden;
+        tbtn.setAttribute('aria-expanded', panel.hidden ? 'false' : 'true');
+        const cur = panel.querySelector('.current'); if(cur) cur.scrollIntoView({block:'nearest'});
+      });
+      document.addEventListener('click', e => { if(panel && !panel.hidden && !toc.contains(e.target)) closePanel(); });
+      [...dots, ...items].forEach(a => a.addEventListener('click', e => {
         e.preventDefault();
-        dots.forEach(d => d.classList.remove('current'));
-        a.classList.add('current');
+        closePanel();
         jumpTo(document.getElementById(a.dataset.target));
       }));
-      dots[0] && dots[0].classList.add('current');
+      setCur(0);
       const ioShow = new IntersectionObserver(entries => {
         entries.forEach(en => toc.classList.toggle('show', en.isIntersecting));
       }, {rootMargin: '-45% 0px -45% 0px'});
       ioShow.observe(sec); observers.push(ioShow);
       const ioCur = new IntersectionObserver(entries => {
         entries.forEach(en => {
-          if(en.isIntersecting) dots.forEach(d => d.classList.toggle('current', d.dataset.target === en.target.id));
+          if(en.isIntersecting) setCur(+en.target.dataset.i);
         });
       }, {threshold: 0.5});
       sec.querySelectorAll('.moment').forEach(m => ioCur.observe(m));
